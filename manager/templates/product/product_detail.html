@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Товар: {{ product.name }}{% endblock %}
+{% block header %}
+    {% include 'includes/header_manager.html' %}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1 class="my-4">{{ product.name }}</h1>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Информация о товаре</h5>
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid mb-3" style="max-width: 300px;">
+                {% else %}
+                    <p>Изображение отсутствует</p>
+                {% endif %}
+                <p><strong>Категория:</strong> {{ product.category.name }}</p>
+                <p><strong>Производитель:</strong> {{ product.manufacturer.name|default:"Не указан" }}</p>
+                <p><strong>Материалы:</strong> {% for material in product.materials.all %}{{ material.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+                <p><strong>Цена:</strong> {{ product.price }} руб.</p>
+                <p><strong>Количество на складе:</strong> {{ product.stock }}</p>
+                <p><strong>Описание:</strong> {{ product.description|default:"Отсутствует" }}</p>
+                <p><strong>Размеры:</strong> {{ product.dimensions|default:"Не указаны" }}</p>
+                <p><strong>В наличии:</strong> {% if product.is_available %}Да{% else %}Нет{% endif %}</p>
+                <p><strong>Дата создания:</strong> {{ product.created_at|date:"d.m.Y H:i" }}</p>
+                <a href="{% url 'product_update' product.pk %}" class="btn btn-warning">Редактировать</a>
+                <a href="{% url 'product_delete' product.pk %}" class="btn btn-danger">Удалить</a>
+                <a href="{% url 'product_list' %}" class="btn btn-secondary">Назад к списку</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

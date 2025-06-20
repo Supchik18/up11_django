@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Заказ #{{ order.id }}{% endblock %}
+{% block header %}
+    {% include 'includes/header_manager.html' %}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1 class="my-4">Заказ #{{ order.id }}</h1>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Информация о заказе</h5>
+                <p><strong>Клиент:</strong> {{ order.customer.first_name }} {{ order.customer.last_name }}</p>
+                <p><strong>Email клиента:</strong> {{ order.customer.email }}</p>
+                <p><strong>Статус:</strong> {{ order.get_status_display }}</p>
+                <p><strong>Общая сумма:</strong> {{ order.total_price }} руб.</p>
+                <p><strong>Дата создания:</strong> {{ order.created_at|date:"d.m.Y H:i" }}</p>
+                <h6>Элементы заказа:</h6>
+                {% if order.items.all %}
+                    <ul>
+                        {% for item in order.items.all %}
+                            <li>{{ item.product.name }} (x{{ item.quantity }}) - {{ item.price }} руб.</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>Элементы заказа отсутствуют.</p>
+                {% endif %}
+                <a href="{% url 'order_update' order.pk %}" class="btn btn-warning">Редактировать</a>
+                <a href="{% url 'order_delete' order.pk %}" class="btn btn-danger">Удалить</a>
+                <a href="{% url 'order_list' %}" class="btn btn-secondary">Назад к списку</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

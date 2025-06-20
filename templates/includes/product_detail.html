@@ -1,0 +1,54 @@
+<div class="row">
+    <div class="col-md-6">
+        <img src="{{ product.image.url }}" class="img-fluid" alt="{{ product.name }}">
+    </div>
+    <div class="col-md-6">
+        <h2>{{ product.name }}</h2>
+        <p><strong>Цена:</strong> {{ product.price }} ₽</p>
+        <p>{{ product.description|default:"Описание отсутствует" }}</p>
+        <ul>
+            {% for material in product.materials.all %}
+                <li>Материал: {{ material.name }}</li>
+            {% empty %}
+                <li>Материалы не указаны</li>
+            {% endfor %}
+            <li>Размеры: {{ product.dimensions|default:"Не указаны" }}</li>
+        </ul>
+        {% if product.stock > 0 and product.is_available %}
+            <div class="mb-3" style="max-width: 200px">
+                <input type="number" class="form-control" id="quantity-{{ product.id }}" min="1" max="{{ product.stock }}" value="1">
+                <button class="btn btn-primary mt-2" style="width: 200px" id="add-to-cart-{{ product.id }}">Добавить в корзину</button>
+            </div>
+        {% else %}
+            <p class="text-danger">Нет в наличии</p>
+        {% endif %}
+    </div>
+</div>
+
+{% block extra_js %}
+    <script>
+        document.querySelectorAll('[id^="add-to-cart-"]').forEach(button => {
+            button.addEventListener('click', () => {
+                const productId = button.id.split('-')[3];
+                const quantity = document.getElementById(`quantity-${productId}`).value;
+                fetch('/add-to-cart/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: `product_id=${productId}&quantity=${quantity}`
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            alert(`Добавлено ${quantity} единиц(ы) в корзину!`);
+                        } else {
+                            alert('Ошибка при добавлении в корзину.');
+                        }
+                    })
+                    .catch(error => console.error('Ошибка:', error));
+            });
+        });
+    </script>
+{% endblock %}

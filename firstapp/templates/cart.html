@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% block title %}Корзина{% endblock %}
+{% block content %}
+    <div class="container mt-5">
+        <h1>Корзина</h1>
+        {% if cart_items %}
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Товар</th>
+                    <th>Количество</th>
+                    <th>Цена за единицу</th>
+                    <th>Итог</th>
+                    <th>Действие</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in cart_items %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>
+                            <input type="number" class="form-control quantity" data-product-id="{{ item.product.id }}"
+                                   value="{{ item.quantity }}" min="1" max="{{ item.sofa.stock }}">
+                        </td>
+                        <td>{{ item.sofa.price }} ₽</td>
+                        <td>{{ item.total }} ₽</td>
+                        <td><button class="btn btn-danger remove" data-product-id="{{ item.product.id }}">Удалить</button></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="3">Общая сумма:</td>
+                    <td>{{ total }} ₽</td>
+                    <td></td>
+                </tr>
+                </tfoot>
+            </table>
+            <a href="{% url 'checkout' %}" class="btn btn-primary">Оформить заказ</a>
+        {% else %}
+            <p>Корзина пуста</p>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        document.querySelectorAll('.quantity').forEach(input => {
+            input.addEventListener('change', () => {
+                const productId = input.dataset.productId;
+                const quantity = input.value;
+                fetch('/update-cart/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: `product_id=${productId}&quantity=${quantity}`
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            location.reload();
+                        } else {
+                            alert(data.message || 'Ошибка обновления');
+                            location.reload();
+                        }
+                    });
+            });
+        });
+
+        document.querySelectorAll('.remove').forEach(button => {
+            button.addEventListener('click', () => {
+                const productId = button.dataset.productId;
+                fetch('/update-cart/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: `product_id=${productId}&quantity=0`
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            location.reload();
+                        } else {
+                            alert(data.message || 'Ошибка удаления');
+                            location.reload();
+                        }
+                    });
+            });
+        });
+    </script>
+{% endblock %}

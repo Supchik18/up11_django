@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}Список товаров{% endblock %}
+{% block header %}
+    {% include 'includes/header_manager.html' %}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1 class="my-4">Товары</h1>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <form method="get" class="input-group">
+                    <input type="text" name="search" class="form-control" placeholder="Поиск по названию" value="{{ request.GET.search }}">
+                    <button type="submit" class="btn btn-primary">Найти</button>
+                    <a href="{% url 'product_list' %}" class="btn btn-secondary">Сбросить</a>
+                </form>
+            </div>
+            <div class="col-md-6 text-end">
+                <a href="{% url 'product_create' %}" class="btn btn-primary">Добавить товар</a>
+                <div class="dropdown d-inline-block">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        Сортировать
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="?sort=name">По имени (A-Z)</a></li>
+                        <li><a class="dropdown-item" href="?sort=-name">По имени (Z-A)</a></li>
+                        <li><a class="dropdown-item" href="?sort=price">По цене (возрастание)</a></li>
+                        <li><a class="dropdown-item" href="?sort=-price">По цене (убывание)</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% if products %}
+            <div class="row">
+                {% for product in products %}
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                {% if product.image %}
+                                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="card-img-top" style="max-height: 150px; object-fit: cover;">
+                                {% endif %}
+                                <h5 class="card-title">
+                                    <a href="{% url 'product_detail' product.pk %}">{{ product.name }}</a>
+                                </h5>
+                                <p class="card-text">
+                                    <strong>Цена:</strong> {{ product.price }} руб.<br>
+                                    <strong>Категория:</strong> {{ product.category.name }}<br>
+                                    <strong>В наличии:</strong> {% if product.is_available %}Да{% else %}Нет{% endif %}
+                                </p>
+                                <a href="{% url 'product_update' product.pk %}" class="btn btn-warning btn-sm">Редактировать</a>
+                                <a href="{% url 'product_delete' product.pk %}" class="btn btn-danger btn-sm">Удалить</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="alert alert-info">Товары отсутствуют.</p>
+        {% endif %}
+    </div>
+{% endblock %}

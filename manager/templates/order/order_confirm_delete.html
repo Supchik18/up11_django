@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block header %}
+    {% include 'includes/header_manager.html' %}
+{% endblock %}
+{% block title %}Удалить заказ{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1 class="my-4">Удалить заказ</h1>
+        <div class="card">
+            <div class="card-body">
+                <p>Вы уверены, что хотите удалить заказ <strong>#{{ order.id }}</strong>?</p>
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Удалить</button>
+                    <a href="{% url 'order_list' %}" class="btn btn-secondary">Отмена</a>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

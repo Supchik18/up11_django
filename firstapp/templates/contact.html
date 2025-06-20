@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Контакты - СтройТех{% endblock %}
+
+{% block content %}
+    <section class="container my-5">
+        <h2 class="text-center mb-4">Свяжитесь с нами</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <h4>Контактная информация</h4>
+                <p><strong>Телефон:</strong> +7 (800) 123-45-67</p>
+                <p><strong>Email:</strong> StroyTech@mail.ru</p>
+                <p><strong>Адрес:</strong> г. Москва, ул. Выдуманная, д. 1</p>
+            </div>
+            <div class="col-md-6">
+                <h4>Напишите нам</h4>
+                <form>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Имя</label>
+                        <input type="text" class="form-control" id="name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email">
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Сообщение</label>
+                        <textarea class="form-control" id="message" rows="4"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Отправить</button>
+                </form>
+            </div>
+        </div>
+    </section>
+{% endblock %}

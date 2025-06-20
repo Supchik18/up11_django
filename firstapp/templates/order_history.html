@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}История заказов{% endblock %}
+{% block content %}
+    <div class="container mt-5">
+        <h1>История заказов</h1>
+        {% if orders %}
+            {% for order in orders %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5>Заказ #{{ order.id }} - {{ order.created_at|date:"d.m.Y H:i" }} ({{ order.status }})</h5>
+                        <p>Клиент: {{ order.customer }}</p>
+                        <p>Общая сумма: {{ order.total_price }} ₽</p>
+                        <ul>
+                            {% for item in order.items.all %}
+                                <li>{{ item.product.name }} x {{ item.quantity }} = {{ item.price }} ₽</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>У вас нет заказов</p>
+        {% endif %}
+    </div>
+{% endblock %}

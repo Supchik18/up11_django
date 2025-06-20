@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Список категорий{% endblock %}
+{% block header %}
+    {% include 'includes/header_manager.html' %}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1 class="my-4">Категории</h1>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <form method="get" class="input-group">
+                    <input type="text" name="search" class="form-control" placeholder="Поиск по названию" value="{{ request.GET.search }}">
+                    <button type="submit" class="btn btn-primary">Найти</button>
+                    <a href="{% url 'category_list' %}" class="btn btn-secondary">Сбросить</a>
+                </form>
+            </div>
+            <div class="col-md-6 text-end">
+                <a href="{% url 'category_create' %}" class="btn btn-primary">Добавить категорию</a>
+                <div class="dropdown d-inline-block">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        Сортировать
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="?sort=name">По имени (A-Z)</a></li>
+                        <li><a class="dropdown-item" href="?sort=-name">По имени (Z-A)</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% if categories %}
+            <div class="row">
+                {% for category in categories %}
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <a href="{% url 'category_detail' category.pk %}">{{ category.name }}</a>
+                                </h5>
+                                <p class="card-text">{{ category.description|truncatewords:20|default:"Описание отсутствует" }}</p>
+                                <a href="{% url 'category_update' category.pk %}" class="btn btn-warning btn-sm">Редактировать</a>
+                                <a href="{% url 'category_delete' category.pk %}" class="btn btn-danger btn-sm">Удалить</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="alert alert-info">Категории отсутствуют.</p>
+        {% endif %}
+    </div>
+{% endblock %}

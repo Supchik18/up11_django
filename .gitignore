@@ -1,0 +1,10 @@
+*.docx
+*.pdf
+
+venv/
+.env
+
+.cache/
+.coverage
+
+.ipynb_checkpoints

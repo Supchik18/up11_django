@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Производитель: {{ manufacturer.name }}{% endblock %}
+{% block header %}
+    {% include 'includes/header_manager.html' %}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1 class="my-4">{{ manufacturer.name }}</h1>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Информация о производителе</h5>
+                <p><strong>Страна:</strong> {{ manufacturer.country|default:"Не указана" }}</p>
+                <p><strong>Веб-сайт:</strong> <a href="{{ manufacturer.website|default:'#' }}">{{ manufacturer.website|default:"Не указан" }}</a></p>
+                <a href="{% url 'manufacturer_update' manufacturer.pk %}" class="btn btn-warning">Редактировать</a>
+                <a href="{% url 'manufacturer_delete' manufacturer.pk %}" class="btn btn-danger">Удалить</a>
+                <a href="{% url 'manufacturer_list' %}" class="btn btn-secondary">Назад к списку</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

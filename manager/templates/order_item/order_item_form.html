@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}{% if form.instance.pk %}Редактировать элемент заказа{% else %}Добавить элемент заказа{% endif %}{% endblock %}
+{% block header %}
+    {% include 'includes/header_manager.html' %}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1 class="my-4">{% if form.instance.pk %}Редактировать элемент заказа{% else %}Добавить элемент заказа{% endif %}</h1>
+        <div class="card">
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        {{ form.order.label_tag }}
+                        {{ form.order }}
+                        {% if form.order.errors %}
+                            <div class="alert alert-danger">{{ form.order.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.product.label_tag }}
+                        {{ form.product }}
+                        {% if form.product.errors %}
+                            <div class="alert alert-danger">{{ form.product.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.quantity.label_tag }}
+                        {{ form.quantity }}
+                        {% if form.quantity.errors %}
+                            <div class="alert alert-danger">{{ form.quantity.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.price.label_tag }}
+                        {{ form.price }}
+                        {% if form.price.errors %}
+                            <div class="alert alert-danger">{{ form.price.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <a href="{% url 'order_item_list' %}" class="btn btn-secondary">Отмена</a>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

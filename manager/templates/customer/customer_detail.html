@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Клиент: {{ customer.first_name }} {{ customer.last_name }}{% endblock %}
+{% block header %}
+    {% include 'includes/header_manager.html' %}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1 class="my-4">{{ customer.first_name }} {{ customer.last_name }}</h1>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Информация о клиенте</h5>
+                <p><strong>Email:</strong> {{ customer.email }}</p>
+                <p><strong>Телефон:</strong> {{ customer.phone|default:"Не указан" }}</p>
+                <p><strong>Адрес:</strong> {{ customer.address|default:"Не указан" }}</p>
+                <a href="{% url 'customer_update' customer.pk %}" class="btn btn-warning">Редактировать</a>
+                <a href="{% url 'customer_delete' customer.pk %}" class="btn btn-danger">Удалить</a>
+                <a href="{% url 'customer_list' %}" class="btn btn-secondary">Назад к списку</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

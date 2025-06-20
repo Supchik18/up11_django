@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Категория: {{ category.name }}{% endblock %}
+{% block header %}
+    {% include 'includes/header_manager.html' %}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1 class="my-4">{{ category.name }}</h1>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Информация о категории</h5>
+                <p><strong>Описание:</strong> {{ category.description|default:"Описание отсутствует" }}</p>
+                <a href="{% url 'category_update' category.pk %}" class="btn btn-warning">Редактировать</a>
+                <a href="{% url 'category_delete' category.pk %}" class="btn btn-danger">Удалить</a>
+                <a href="{% url 'category_list' %}" class="btn btn-secondary">Назад к списку</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Каталог - СтройТех{% endblock %}
+
+{% block content %}
+    <section class="container my-5">
+        <h2 class="text-center mb-4">Каталог техники</h2>
+        <div class="row">
+            {% for product in product %}
+            	{% include 'includes/product_card.html' with product=product %}
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}

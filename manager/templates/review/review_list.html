@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}Список отзывов{% endblock %}
+{% block header %}
+    {% include 'includes/header_manager.html' %}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1 class="my-4">Отзывы</h1>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <form method="get" class="input-group">
+                    <select name="rating" class="form-select">
+                        <option value="">Все рейтинги</option>
+                        {% for i in "12345"|make_list %}
+                            <option value="{{ i }}" {% if request.GET.rating == i %}selected{% endif %}>{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn btn-primary">Фильтровать</button>
+                    <a href="{% url 'review_list' %}" class="btn btn-secondary">Сбросить</a>
+                </form>
+            </div>
+            <div class="col-md-6 text-end">
+                <a href="{% url 'review_create' %}" class="btn btn-primary">Добавить отзыв</a>
+                <div class="dropdown d-inline-block">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        Сортировать
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="?sort=rating">По рейтингу (возрастание)</a></li>
+                        <li><a class="dropdown-item" href="?sort=-rating">По рейтингу (убывание)</a></li>
+                        <li><a class="dropdown-item" href="?sort=-created_at">По дате (новые)</a></li>
+                        <li><a class="dropdown-item" href="?sort=created_at">По дате (старые)</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% if reviews %}
+            <div class="row">
+                {% for review in reviews %}
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <a href="{% url 'review_detail' review.pk %}">{{ review.product.name }}</a>
+                                </h5>
+                                <p class="card-text">
+                                    <strong>Клиент:</strong> {{ review.customer.first_name }} {{ review.customer.last_name }}<br>
+                                    <strong>Рейтинг:</strong> {{ review.rating }}<br>
+                                    <strong>Комментарий:</strong> {{ review.comment|truncatewords:10|default:"Без комментария" }}<br>
+                                    <strong>Дата:</strong> {{ review.created_at|date:"d.m.Y H:i" }}
+                                </p>
+                                <a href="{% url 'review_update' review.pk %}" class="btn btn-warning btn-sm">Редактировать</a>
+                                <a href="{% url 'review_delete' review.pk %}" class="btn btn-danger btn-sm">Удалить</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="alert alert-info">Отзывы отсутствуют.</p>
+        {% endif %}
+    </div>
+{% endblock %}

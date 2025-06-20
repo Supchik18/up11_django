@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block title %}{% if form.instance.pk %}Редактировать товар{% else %}Добавить товар{% endif %}{% endblock %}
+{% block header %}
+    {% include 'includes/header_manager.html' %}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1 class="my-4">{% if form.instance.pk %}Редактировать товар{% else %}Добавить товар{% endif %}</h1>
+        <div class="card">
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        {{ form.name.label_tag }}
+                        {{ form.name }}
+                        {% if form.name.errors %}
+                            <div class="alert alert-danger">{{ form.name.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.category.label_tag }}
+                        {{ form.category }}
+                        {% if form.category.errors %}
+                            <div class="alert alert-danger">{{ form.category.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.manufacturer.label_tag }}
+                        {{ form.manufacturer }}
+                        {% if form.manufacturer.errors %}
+                            <div class="alert alert-danger">{{ form.manufacturer.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.materials.label_tag }}
+                        {{ form.materials }}
+                        {% if form.materials.errors %}
+                            <div class="alert alert-danger">{{ form.materials.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.price.label_tag }}
+                        {{ form.price }}
+                        {% if form.price.errors %}
+                            <div class="alert alert-danger">{{ form.price.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.stock.label_tag }}
+                        {{ form.stock }}
+                        {% if form.stock.errors %}
+                            <div class="alert alert-danger">{{ form.stock.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.description.label_tag }}
+                        {{ form.description }}
+                        {% if form.description.errors %}
+                            <div class="alert alert-danger">{{ form.description.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.dimensions.label_tag }}
+                        {{ form.dimensions }}
+                        {% if form.dimensions.errors %}
+                            <div class="alert alert-danger">{{ form.dimensions.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.is_available.label_tag }}
+                        {{ form.is_available }}
+                        {% if form.is_available.errors %}
+                            <div class="alert alert-danger">{{ form.is_available.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.image.label_tag }}
+                        {{ form.image }}
+                        {% if form.image.errors %}
+                            <div class="alert alert-danger">{{ form.image.errors }}</div>
+                        {% endif %}
+                        {% if form.instance.image %}
+                            <p>Текущее изображение: <img src="{{ form.instance.image.url }}" alt="Текущее изображение" style="max-width: 200px;"></p>
+                        {% endif %}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <a href="{% url 'product_list' %}" class="btn btn-secondary">Отмена</a>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

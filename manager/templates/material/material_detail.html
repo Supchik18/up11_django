@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Материал: {{ material.name }}{% endblock %}
+{% block header %}
+    {% include 'includes/header_manager.html' %}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1 class="my-4">{{ material.name }}</h1>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Информация о материале</h5>
+                <p><strong>Описание:</strong> {{ material.description|default:"Описание отсутствует" }}</p>
+                <a href="{% url 'material_update' material.pk %}" class="btn btn-warning">Редактировать</a>
+                <a href="{% url 'material_delete' material.pk %}" class="btn btn-danger">Удалить</a>
+                <a href="{% url 'material_list' %}" class="btn btn-secondary">Назад к списку</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

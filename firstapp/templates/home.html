@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Главная - СтройТех{% endblock %}
+
+{% block content %}
+    <section class="hero-section py-5 text-center">
+        <div class="container">
+            <h1 class="display-4">Добро пожаловать в СтройТех</h1>
+            <p class="lead">Найдите всё необходимое для строительства вашего будущего!</p>
+            <a href="/catalog/" class="btn btn-primary btn-lg">Перейти в каталог</a>
+        </div>
+    </section>
+    <section class="container my-5">
+        <h2 class="text-center mb-4">Почему выбирают нас?</h2>
+        <div class="row">
+            <div class="col-md-4 text-center">
+                <h4>Качество</h4>
+                <p>Только доверенные производители и современные технологии.</p>
+            </div>
+            <div class="col-md-4 text-center">
+                <h4>Универсальность</h4>
+                <p>Надёжные и современные модели для любых задач.</p>
+            </div>
+            <div class="col-md-4 text-center">
+                <h4>Доставка</h4>
+                <p>Быстрая и безопасная доставка по всей стране.</p>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Удалить отзыв{% endblock %}
+{% block header %}
+    {% include 'includes/header_manager.html' %}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1 class="my-4">Удалить отзыв</h1>
+        <div class="card">
+            <div class="card-body">
+                <p>Вы уверены, что хотите удалить отзыв о <strong>{{ review.product.name }}</strong> от {{ review.customer.first_name }} {{ review.customer.last_name }}?</p>
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Удалить</button>
+                    <a href="{% url 'review_list' %}" class="btn btn-secondary">Отмена</a>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

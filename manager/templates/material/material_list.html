@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Список материалов{% endblock %}
+{% block header %}
+    {% include 'includes/header_manager.html' %}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1 class="my-4">Материалы</h1>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <form method="get" class="input-group">
+                    <input type="text" name="search" class="form-control" placeholder="Поиск по названию" value="{{ request.GET.search }}">
+                    <button type="submit" class="btn btn-primary">Найти</button>
+                    <a href="{% url 'material_list' %}" class="btn btn-secondary">Сбросить</a>
+                </form>
+            </div>
+            <div class="col-md-6 text-end">
+                <a href="{% url 'material_create' %}" class="btn btn-primary">Добавить материал</a>
+                <div class="dropdown d-inline-block">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        Сортировать
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="?sort=name">По имени (A-Z)</a></li>
+                        <li><a class="dropdown-item" href="?sort=-name">По имени (Z-A)</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% if materials %}
+            <div class="row">
+                {% for material in materials %}
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <a href="{% url 'material_detail' material.pk %}">{{ material.name }}</a>
+                                </h5>
+                                <p class="card-text">{{ material.description|truncatewords:20|default:"Описание отсутствует" }}</p>
+                                <a href="{% url 'material_update' material.pk %}" class="btn btn-warning btn-sm">Редактировать</a>
+                                <a href="{% url 'material_delete' material.pk %}" class="btn btn-danger btn-sm">Удалить</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="alert alert-info">Материалы отсутствуют.</p>
+        {% endif %}
+    </div>
+{% endblock %}
